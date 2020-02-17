@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 
@@ -24,13 +24,39 @@ const TOGGLE_TODO = gql`
   }
 `;
 
+const ADD_TODO = gql`
+  mutation addTodo($text: String!) {
+    insert_todos(objects: { text: $text }) {
+      returning {
+        done
+        id
+        text
+      }
+    }
+  }
+`;
+
 function App() {
   const { data, loading, error } = useQuery(GET_TODOS);
   const [toggleTodo] = useMutation(TOGGLE_TODO);
+  const [addTodo] = useMutation(ADD_TODO, {
+    onCompleted: () => setTodoText("")
+  });
+  const [todoText, setTodoText] = useState("");
 
   async function handleToggleTodo({ id, done }) {
     const result = await toggleTodo({ variables: { id: id, done: !done } });
-    console.log(result);
+    console.log("toggled todo", result.data.update_todos.returning);
+  }
+
+  async function handleAddTodo(event) {
+    event.preventDefault();
+    const result = await addTodo({
+      variables: { text: todoText },
+      refetchQueries: [{ query: GET_TODOS }]
+    });
+    console.log("added todo", result.data.insert_todos.returning);
+    // setTodoText("");
   }
 
   if (loading) return <div>Loading todos...</div>;
@@ -46,9 +72,19 @@ function App() {
       </h1>
 
       {/* Todo Form */}
-      <form className="mb3">
-        <input className="pa2 f4" type="text" placeholder="Write your todo" />
-        <button className="pa2 f4 bg-dark-blue white" type="submit">
+      <form className="mb3" onSubmit={handleAddTodo}>
+        <input
+          className="pa2 f4"
+          onChange={event => setTodoText(event.target.value)}
+          placeholder="Write your todo"
+          type="text"
+          value={todoText}
+        />
+        <button
+          className="pa2 f4 bg-dark-blue white"
+          type="submit"
+          disabled={!todoText}
+        >
           Create
         </button>
       </form>
@@ -57,10 +93,10 @@ function App() {
         {data.todos.map(todo => (
           <p key={todo.id} onDoubleClick={() => handleToggleTodo(todo)}>
             <input
+              checked={todo.done}
+              name={todo.id}
               onChange={() => handleToggleTodo(todo)}
               type="checkbox"
-              name={todo.id}
-              checked={todo.done}
             />
             <label htmlFor={todo.id}>
               <span className={`pointer pa1 f4 ${todo.done && "strike"}`}>
