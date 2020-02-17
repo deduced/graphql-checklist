@@ -1,5 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import ApolloClient from "apollo-boost";
+import ApolloProvider from "@apollo/react-hooks";
 
-ReactDOM.render(<App />, document.getElementById("🤓"));
+const client = new ApolloClient({
+  uri: "https://react-todo-graphql-dev.herokuapp.com/v1/graphql"
+});
+
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>,
+
+  document.getElementById("🤓")
+);
