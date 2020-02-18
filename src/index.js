@@ -4,9 +4,10 @@ import App from "./App";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 
+console.log(process.env.API_ENDPOINT);
 //See the HASURA documentation for quick set up with heroku
 const client = new ApolloClient({
-  uri: "https://react-todo-graphql-dev.herokuapp.com/v1/graphql"
+  uri: process.env.REACT_APP_API_ENDPOINT
 });
 
 ReactDOM.render(
