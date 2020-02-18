@@ -1,8 +1,8 @@
-THis project is a very simple TODO (checklist) app utilizing React, Apollo Client, GraphQL, [Hasura](https://hasura.io/), and [Tachyons](http://tachyons.io/) for CSS. This is obviously far from production and is merely a project to mess around with Hasura quickly.
+This project is a very simple TODO (checklist) app utilizing React, Apollo Client, GraphQL, [Hasura](https://hasura.io/), and [Tachyons](http://tachyons.io/) for CSS. This is obviously far from production and is merely a project to mess around with Hasura quickly.
 
 ## To Get Started
 
-Got to [Hasura](https://hasura.io) and follow the `Try it out in 30 seconds on Heroku` instructions. You will end up creating a project in heroku with hasura. When that is set up, you will simply rename the `.env.config` file to `.env` and paste in your endpoint from heroku, assuming you go that route rather than local setup.
+Go to [Hasura](https://hasura.io) and follow the `Try it out in 30 seconds on Heroku` instructions. You will end up creating a project in heroku with hasura. When that is set up, you will simply rename the `.env.config` file to `.env` and paste in your endpoint from heroku, assuming you go that route rather than local setup.
 
 ## Available Scripts
 
